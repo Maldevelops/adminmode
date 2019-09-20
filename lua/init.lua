@@ -62,22 +62,25 @@ net.Receive("AdminMode", function(len, ply)
 			end
 		end]]
 
+        if ply:GetMoveType() == MOVETYPE_WALK then
+            ply:SetMoveType(MOVETYPE_NOCLIP)
+        else
+            print("[Log]" .. ply:Nick() .. " cannot be placed in NoClip")
+        end
+
+
         ply:SetPlayerColor( Vector( 0,0,0 ) )
         net.Start("AMApproved")
         net.Send(ply)
 
         ply:GodEnable()
-        if ( desiredNoClipState ) then
-        else
-            RunConsoleCommand("ulx", "noclip", ply:Nick())
-        end
 
     else
     	print("[Log] " .. ply:Nick() .. " was Denied!")
     end
 end)
 
-net.Receive("UnAdminMode", function(len, ply, desiredNoClipState)
+net.Receive("UnAdminMode", function(len, ply)
 
 	print("[Log] " .. ply:Nick() .. " Called UnAdminMode!")
 
@@ -87,9 +90,9 @@ net.Receive("UnAdminMode", function(len, ply, desiredNoClipState)
         print("[Log] Name - " .. ply:Nick() .. " | IP - " .. ply:IPAddress() .. " | Steam ID - " .. ply:SteamID())
 		net.Start("UAMApproved")
         net.Send(ply)
-        if ( desiredNoClipState ) then
-        	RunConsoleCommand("noclip", ply:Nick())
-		else
+        if ply:GetMoveType() == MOVETYPE_NOCLIP then
+            ply:SetMoveType(MOVETYPE_WALK)
+        else
 		end
 		ply:GodDisable()
         location = ply:GetPos()
