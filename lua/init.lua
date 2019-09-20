@@ -3,10 +3,24 @@ util.AddNetworkString("UnAdminMode")
 util.AddNetworkString("AMApproved")
 util.AddNetworkString("UAMApproved")
 util.AddNetworkString("AMLaunch")
+
 util.AddNetworkString("Cloak")
 util.AddNetworkString("UnCloak")
 util.AddNetworkString("CloakApproved")
 util.AddNetworkString("UnCloakApproved")
+
+util.AddNetworkString("NoTarget")
+util.AddNetworkString("UnNoTarget")
+util.AddNetworkString("NoTargetApproved")
+util.AddNetworkString("UnNoTargetApproved")
+
+util.AddNetworkString("PhysFreeze")
+util.AddNetworkString("UnPhysFreeze")
+util.AddNetworkString("PhysFreezeApproved")
+util.AddNetworkString("UnPhysFreezeApproved")
+
+util.AddNetworkString("Announce")
+util.AddNetworkString("AnnounceReturn")
 
 
 hook.Add("PlayerSay", "AdminLaunch", function(calling, txt, t, ply)
@@ -125,6 +139,54 @@ net.Receive("UnCloak", function(len, ply)
         net.Start("UnCloakApproved")
         net.Send(ply)
 
+    else
+        print("[Log] " .. ply:Nick() .. " was Denied!")
+    end
+end)
+
+net.Receive("NoTarget", function(len, ply)
+    if table.HasValue(ADMINMODE.Groups, ply:GetNWString("usergroup")) then
+        
+        ply:SetNoTarget(true)
+        net.Start("NoTargetApproved")
+        net.Send(ply)
+
+    else
+        print("[Log] " .. ply:Nick() .. " was Denied!")
+    end
+end)
+
+net.Receive("UnNoTarget", function(len, ply)
+    if table.HasValue(ADMINMODE.Groups, ply:GetNWString("usergroup")) then
+        
+        ply:SetNoTarget(false)
+        net.Start("UnNoTargetApproved")
+        net.Send(ply)
+
+    else
+        print("[Log] " .. ply:Nick() .. " was Denied!")
+    end
+end)
+local function PlayerPickup( ply, ent )
+	if ent:IsPlayer() then
+		ent:Freeze( true )
+        ent:Lock()
+        --ent:SetMoveType(MOVETYPE_NOCLIP)
+    end
+end
+
+util.AddNetworkString("Title")
+
+net.Receive("Title", function( len ) // removing this will throw errors in game. It's also a dick thing to do.
+	print("[AdminMode] Fix the Title, don't take our Company out.")
+
+end)
+
+net.Receive("Announce", function(len, ply)
+    if table.HasValue(ADMINMODE.Groups, ply:GetNWString("usergroup")) then
+    	net.Start("AnnounceReturn")
+    	net.WriteEntity(net.ReadEntity())
+    	net.Broadcast()
     else
         print("[Log] " .. ply:Nick() .. " was Denied!")
     end

@@ -7,6 +7,7 @@ AdminMode Configuration File
 ADMINMODE = {}
 /*
 Button that opens AdminMode Menu.
+It most likely will not work, you will need to self bind it to "f2".
 */
 ADMINMODE.KeyBind = KEY_F2
 
