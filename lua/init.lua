@@ -65,7 +65,8 @@ net.Receive("AdminMode", function(len, ply)
         if ply:GetMoveType() == MOVETYPE_WALK then
             ply:SetMoveType(MOVETYPE_NOCLIP)
         else
-            print("[Log]" .. ply:Nick() .. " cannot be placed in NoClip")
+
+            
         end
 
 
@@ -76,7 +77,14 @@ net.Receive("AdminMode", function(len, ply)
         ply:GodEnable()
 
     else
-    	print("[Log] " .. ply:Nick() .. " was Denied!")
+    	if ADMINMODE.EnableExploitBan == true then
+        		print("[Log]" .. ply:Nick() .. " has been banned for attempted exploit!")
+        		ply:Ban(ADMINMODE.ExploitBanTime, false)
+        		ply:Kick(ADMINMODE.BanReason)
+
+        	else
+        		print("[Log]" .. ply:Nick() .. " was denied access")
+        	end
     end
 end)
 
@@ -122,7 +130,14 @@ net.Receive("Cloak", function(len, ply)
         net.Send(ply)
 
     else
-        print("[Log] " .. ply:Nick() .. " was Denied!")
+        if ADMINMODE.EnableExploitBan == true then
+        		print("[Log]" .. ply:Nick() .. " has been banned for attempted exploit!")
+        		ply:Ban(ADMINMODE.ExploitBanTime, false)
+        		ply:Kick(ADMINMODE.BanReason)
+
+        	else
+        		print("[Log]" .. ply:Nick() .. " was denied access")
+        	end
     end
 end)
 
@@ -155,7 +170,14 @@ net.Receive("NoTarget", function(len, ply)
         net.Send(ply)
 
     else
-        print("[Log] " .. ply:Nick() .. " was Denied!")
+        if ADMINMODE.EnableExploitBan == true then
+        		print("[Log]" .. ply:Nick() .. " has been banned for attempted exploit!")
+        		ply:Ban(ADMINMODE.ExploitBanTime, false)
+        		ply:Kick(ADMINMODE.BanReason)
+
+        	else
+        		print("[Log]" .. ply:Nick() .. " was denied access")
+        	end
     end
 end)
 

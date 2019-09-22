@@ -16,6 +16,43 @@ surface.CreateFont( "Notification", {
 	outline = false,
 } )
 
+surface.CreateFont( "EntryFont", {
+	font = "Raleway SemiBold", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+	extended = true,
+	size = 20,
+	weight = 300,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = true,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont( "BoxFont", {
+	font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+	extended = true,
+	size = 20,
+	weight = 300,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+
 surface.CreateFont( "NotificationTitle", {
 	font = "Arial", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
 	extended = true,
@@ -40,24 +77,27 @@ function OpenAdminMenu(ply)
 		
 
 		sound.Play("buttons/button9.wav", ply:GetPos())
-		frame:SetSize(200,175)
+		frame:SetSize(190,160)
 		frame:SetTitle("AdminMode by Soul Networks")
+		frame:SetBackgroundBlur(true)
 		frame:ShowCloseButton(false)
 		frame:SetVisible(true)
 		frame:Center()
 		frame:MakePopup()
 		frame.Paint = function( self, w, h ) -- 'function Frame:Paint( w, h )' works too
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 23, 23, 23, 200 ) ) -- Draw a red box instead of the frame
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 45, 52, 54, 250 ) ) -- Draw a red box instead of the frame
 		end
 
 
 
 		local adminBtn = vgui.Create("DButton",frame)
+		adminBtn:SetSize(75, 23)
 		adminBtn:SetText("Enable")
-		adminBtn:SetPos(20, 25)
+		adminBtn:SetFont("EntryFont")
+		adminBtn:SetPos(15, 25)
 		adminBtn:SetTextColor( Color( 255, 255, 255 ) )
 		adminBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 64, 227, 85, 175 ) ) -- Draw a blue button
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 46, 204, 113, 175 ) ) -- Draw a blue button
 		end
 		adminBtn.DoClick = function()
 			sound.Play("buttons/button14.wav", ply:GetPos())
@@ -67,11 +107,13 @@ function OpenAdminMenu(ply)
 		end
 
 		local unadminBtn = vgui.Create("DButton",frame)
+		unadminBtn:SetSize(75, 23)
 		unadminBtn:SetText("Disable")
-		unadminBtn:SetPos(20, 50)
+		unadminBtn:SetPos(15, 50)
+		unadminBtn:SetFont("EntryFont")
 		unadminBtn:SetTextColor( Color( 255, 255, 255 ) )
 		unadminBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 255, 36, 36, 175 ) ) 
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 245, 59, 59, 175 ) ) 
 		end
 		unadminBtn.DoClick = function()
 			sound.Play("buttons/button14.wav", ply:GetPos())
@@ -81,8 +123,10 @@ function OpenAdminMenu(ply)
 		end
 
 		local cancelBtn = vgui.Create("DButton",frame)
+		cancelBtn:SetSize(75, 23)
 		cancelBtn:SetText("Cancel")
-		cancelBtn:SetPos(70, 130)
+		cancelBtn:SetPos(65, 130)
+		cancelBtn:SetFont("EntryFont")
 		cancelBtn:SetTextColor( Color( 255, 255, 255 ) )
 		cancelBtn.Paint = function( self, w, h )
 			draw.RoundedBox( 0, 0, 0, w, h, Color( 30, 30, 30, 200 ) ) 
@@ -93,11 +137,13 @@ function OpenAdminMenu(ply)
 		end
 
 		local cloakBtn = vgui.Create("DButton",frame)
+		cloakBtn:SetSize(75, 23)
 		cloakBtn:SetText("Cloak")
 		cloakBtn:SetPos(110, 25)
+		cloakBtn:SetFont("EntryFont")
 		cloakBtn:SetTextColor( Color( 255, 255, 255 ) )
 		cloakBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 3, 102, 252, 175 ) ) -- Draw a blue button
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 75, 207, 250, 175 ) ) -- Draw a blue button
 		end
 		cloakBtn.DoClick = function()
 			sound.Play("buttons/button14.wav", ply:GetPos())
@@ -107,11 +153,13 @@ function OpenAdminMenu(ply)
 		end
 
 		local uncloakBtn = vgui.Create("DButton",frame)
-		uncloakBtn:SetText("Uncloak")
+		uncloakBtn:SetSize(75, 23)
+		uncloakBtn:SetText("Disable")
 		uncloakBtn:SetPos(110, 50)
+		uncloakBtn:SetFont("EntryFont")
 		uncloakBtn:SetTextColor( Color( 255, 255, 255 ) )
 		uncloakBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 252, 140, 3, 175 ) ) -- Draw a blue button
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 245, 59, 59, 175 ) ) -- Draw a blue button
 		end
 		uncloakBtn.DoClick = function()
 			sound.Play("buttons/button14.wav", ply:GetPos())
@@ -120,11 +168,13 @@ function OpenAdminMenu(ply)
 			net.SendToServer()
 		end
 		local noTargetBtn = vgui.Create("DButton",frame)
+		noTargetBtn:SetSize(75, 23)
 		noTargetBtn:SetText("NoTarget")
 		noTargetBtn:SetPos(110, 75)
+		noTargetBtn:SetFont("EntryFont")
 		noTargetBtn:SetTextColor( Color( 255, 255, 255 ) )
 		noTargetBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 71, 61, 255, 175 ) ) -- Draw a blue button
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 214, 162, 232, 175 ) ) -- Draw a blue button
 		end
 		noTargetBtn.DoClick = function()
 			sound.Play("buttons/button14.wav", ply:GetPos())
@@ -133,11 +183,13 @@ function OpenAdminMenu(ply)
 			net.SendToServer()
 		end
 		local unNoTargetBtn = vgui.Create("DButton",frame)
-		unNoTargetBtn:SetText("UnNoTarget")
+		unNoTargetBtn:SetSize(75, 23)
+		unNoTargetBtn:SetText("Disable")
 		unNoTargetBtn:SetPos(110, 100)
+		unNoTargetBtn:SetFont("EntryFont")
 		unNoTargetBtn:SetTextColor( Color( 255, 255, 255 ) )
 		unNoTargetBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 25, 75, 107, 175 ) ) -- Draw a blue button
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 245, 59, 59, 175 ) ) -- Draw a blue button
 		end
 		unNoTargetBtn.DoClick = function()
 			sound.Play("buttons/button14.wav", ply:GetPos())
@@ -149,54 +201,11 @@ function OpenAdminMenu(ply)
 		local textBox = vgui.Create( "DTextEntry", frame ) -- create the form as a child of frame
 		textBox:SetPos( 10, 100 )
 		textBox:SetSize( 90, 22 )
+		textBox:SetFont( "BoxFont" )
 		textBox:SetText( "Text" )
 		textBox.OnEnter = function( self )
-			chat.AddText(Color(40, 40, 40), "", Color(255, 60, 60), ADMINMODE.ChatName, Color(40, 40, 40), " ▶ ", Color(255, 255, 255), self:GetValue())	-- print the form's text as server text
-
-			local NotifyPanel = vgui.Create( "DNotify" )
-			NotifyPanel:SetPos( 15, 20 )
-			NotifyPanel:SetSize( 500, 50 ) // w/h
-			NotifyPanel:SetAlignment( 5 )
-			NotifyPanel:SetLife(10)
-
-			-- Gray background panel
-			local bg = vgui.Create( "DPanel", NotifyPanel )
-			bg:Dock( FILL )
-			bg:SetBackgroundColor( Color( 21, 21, 21, 200 ) )
-
-			-- A yellow label message ( parented to background panel )
-			local lbl = vgui.Create( "DLabel", bg )
-			lbl:SetPos( 100, 0 )
-			lbl:SetSize( 295, 72 )
-			lbl:SetText( self:GetValue() )
-			lbl:SetTextColor( Color( 245, 59, 59 ) )
-			lbl:SetFont( "Notification" )
-			lbl:SetWrap( false )
-			lbl:SetContentAlignment( 5 )
-
-			local lbl = vgui.Create( "DLabel", bg )
-			lbl:SetPos( 100, 0 )
-			lbl:SetSize( 295, 72 )
-			lbl:SetText( ADMINMODE.ChatName )
-			lbl:SetTextColor( Color( 255, 255, 255 ) )
-			lbl:SetFont( "NotificationTitle" )
-			lbl:SetWrap( false )
-			lbl:SetContentAlignment( 8 )
-
-			-- Add the background panel to the notification
-			NotifyPanel:AddItem( bg )
-
-		end
-
-		local physFreezeBtn = vgui.Create("DButton",frame)
-		physFreezeBtn:SetText("Announce")
-		physFreezeBtn:SetPos(20, 75)
-		physFreezeBtn:SetTextColor( Color( 255, 255, 255 ) )
-		physFreezeBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 255, 120, 239, 175 ) ) 
-		end
-		physFreezeBtn.DoClick = function()
-			sound.Play("buttons/button14.wav", ply:GetPos())
+			if table.HasValue(ADMINMODE.AnnouncementAccess, ply:GetNWString("usergroup")) then
+				sound.Play("buttons/button14.wav", ply:GetPos())
 			chat.AddText(Color(40, 40, 40), "", Color(255, 60, 60), ADMINMODE.ChatName, Color(40, 40, 40), " ▶ ", Color(255, 255, 255), textBox:GetValue())
 			local NotifyPanel = vgui.Create( "DNotify" )
 			NotifyPanel:SetPos( 15, 20 )
@@ -230,7 +239,82 @@ function OpenAdminMenu(ply)
 
 			-- Add the background panel to the notification
 			NotifyPanel:AddItem( bg )
+		else
+			sound.Play("buttons/button11.wav", ply:GetPos())
+			print("Denied Access")
 		end
+
+		end
+
+		local physFreezeBtn = vgui.Create("DButton",frame)
+		physFreezeBtn:SetSize(75, 23)
+		physFreezeBtn:SetText("Announce")
+		physFreezeBtn:SetPos(15, 75)
+		physFreezeBtn:SetFont("EntryFont")
+		physFreezeBtn:SetTextColor( Color( 255, 255, 255 ) )
+		physFreezeBtn.Paint = function( self, w, h )
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 52, 231, 228, 175 ) ) 
+		end
+		physFreezeBtn.DoClick = function()
+
+			
+			if table.HasValue(ADMINMODE.AnnouncementAccess, ply:GetNWString("usergroup")) then
+				sound.Play("buttons/button14.wav", ply:GetPos())
+			chat.AddText(Color(40, 40, 40), "", Color(255, 60, 60), ADMINMODE.ChatName, Color(40, 40, 40), " ▶ ", Color(255, 255, 255), textBox:GetValue())
+			local NotifyPanel = vgui.Create( "DNotify" )
+			NotifyPanel:SetPos( 15, 20 )
+			NotifyPanel:SetSize( 500, 50 ) // w/h
+			NotifyPanel:SetAlignment( 5 )
+			NotifyPanel:SetLife(10)
+
+			-- Gray background panel
+			local bg = vgui.Create( "DPanel", NotifyPanel )
+			bg:Dock( FILL )
+			bg:SetBackgroundColor( Color( 21, 21, 21, 200 ) )
+
+			-- A yellow label message ( parented to background panel )
+			local lbl = vgui.Create( "DLabel", bg )
+			lbl:SetPos( 100, 0 )
+			lbl:SetSize( 295, 72 )
+			lbl:SetText( textBox:GetValue() )
+			lbl:SetTextColor( Color( 245, 59, 59 ) )
+			lbl:SetFont( "Notification" )
+			lbl:SetWrap( false )
+			lbl:SetContentAlignment( 5 )
+
+			local lbl = vgui.Create( "DLabel", bg )
+			lbl:SetPos( 100, 0 )
+			lbl:SetSize( 295, 72 )
+			lbl:SetText( ADMINMODE.ChatName )
+			lbl:SetTextColor( Color( 255, 255, 255 ) )
+			lbl:SetFont( "NotificationTitle" )
+			lbl:SetWrap( false )
+			lbl:SetContentAlignment( 8 )
+
+			-- Add the background panel to the notification
+			NotifyPanel:AddItem( bg )
+
+
+		else
+			sound.Play("buttons/button11.wav", ply:GetPos())
+			print("Denied Access")
+		end
+		end
+
+		local xBtn = vgui.Create("DButton",frame)
+		xBtn:SetText("X")
+		xBtn:SetPos(175, 0)
+		xBtn:SetSize(16, 18)
+		xBtn:SetFont("EntryFont")
+		xBtn:SetTextColor( Color( 255, 255, 255 ) )
+		xBtn.Paint = function( self, w, h )
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 255, 54, 54, 150 ) ) -- Draw a blue button
+		end
+		xBtn.DoClick = function()
+			sound.Play("buttons/button14.wav", ply:GetPos())
+			frame:Close()
+		end
+
 		
 		
 
