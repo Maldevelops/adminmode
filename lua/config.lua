@@ -70,7 +70,7 @@ is added to your game our interface bugs.
 
 Simply toggle this to true if that is the case
 */
-ADMINMODE.UsingDarkTheme = true // THIS DOES NOT USE DARK THEME READ ABOVE
+ADMINMODE.UsingDarkTheme = false // THIS DOES NOT USE DARK THEME READ ABOVE
 // Also this may not work ^
 /*
 Do you want the Changelog to appear in server console?

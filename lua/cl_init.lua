@@ -306,7 +306,7 @@ function OpenAdminMenu(ply)
 		if ADMINMODE.UsingDarkTheme == true then
 			textBox:SetTextColor( Color( 255, 255, 255 ) )
 		else
-			
+			textBox:SetTextColor( Color( 19, 19, 19 ) )
 		end
 
 		textBox.OnEnter = function( self )
