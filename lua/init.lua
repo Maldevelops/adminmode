@@ -14,11 +14,6 @@ util.AddNetworkString("UnNoTarget")
 util.AddNetworkString("NoTargetApproved")
 util.AddNetworkString("UnNoTargetApproved")
 
-util.AddNetworkString("PhysFreeze")
-util.AddNetworkString("UnPhysFreeze")
-util.AddNetworkString("PhysFreezeApproved")
-util.AddNetworkString("UnPhysFreezeApproved")
-
 util.AddNetworkString("Announce")
 util.AddNetworkString("AnnounceReturn")
 
@@ -69,9 +64,9 @@ net.Receive("AdminMode", function(len, ply)
             
         end
 
-
         ply:SetPlayerColor( Vector( 0,0,0 ) )
         net.Start("AMApproved")
+        net.WriteEntity( net.ReadEntity() )
         net.Send(ply)
 
         ply:GodEnable()
@@ -164,7 +159,8 @@ end)
 
 net.Receive("NoTarget", function(len, ply)
     if table.HasValue(ADMINMODE.Groups, ply:GetNWString("usergroup")) then
-        
+        local sender = net.ReadEntity()
+        ply:AddFlags( FL_NOTARGET )
         ply:SetNoTarget(true)
         net.Start("NoTargetApproved")
         net.Send(ply)
@@ -200,12 +196,7 @@ local function PlayerPickup( ply, ent )
     end
 end
 
-util.AddNetworkString("Title")
 
-net.Receive("Title", function( len ) // removing this will throw errors in game. It's also a dick thing to do.
-	print("[AdminMode] Fix the Title, don't take our Company out.")
-
-end)
 
 net.Receive("Announce", function(len, ply)
     if table.HasValue(ADMINMODE.Groups, ply:GetNWString("usergroup")) then

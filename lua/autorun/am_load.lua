@@ -16,8 +16,9 @@ if SERVER then
 
 else
 
-	include("changelog.lua")
+	
 	include("config.lua")
+	include("changelog.lua")
 	include("init.lua")
 	include("cl_init.lua")
 

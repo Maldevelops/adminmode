@@ -17,10 +17,10 @@ surface.CreateFont( "Notification", {
 } )
 
 surface.CreateFont( "EntryFont", {
-	font = "Raleway SemiBold", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
+	font = "Tahoma", -- Use the font-name which is shown to you by your operating system Font Viewer, not the file name
 	extended = true,
 	size = 20,
-	weight = 300,
+	weight = 500,
 	blursize = 0,
 	scanlines = 0,
 	antialias = true,
@@ -29,7 +29,7 @@ surface.CreateFont( "EntryFont", {
 	strikeout = false,
 	symbol = false,
 	rotary = false,
-	shadow = true,
+	shadow = false,
 	additive = false,
 	outline = false,
 } )
@@ -70,6 +70,8 @@ surface.CreateFont( "NotificationTitle", {
 	additive = false,
 	outline = false,
 } )
+
+
 function OpenAdminMenu(ply)
 
 	if table.HasValue(ADMINMODE.Groups, ply:GetNWString("usergroup")) then
@@ -77,8 +79,8 @@ function OpenAdminMenu(ply)
 		
 
 		sound.Play("buttons/button9.wav", ply:GetPos())
-		frame:SetSize(190,160)
-		frame:SetTitle("AdminMode by Soul Networks")
+		frame:SetSize(130,180)
+		frame:SetTitle(ADMINMODE.Title)
 		frame:SetBackgroundBlur(true)
 		frame:ShowCloseButton(false)
 		frame:SetVisible(true)
@@ -91,21 +93,58 @@ function OpenAdminMenu(ply)
 
 
 		local adminBtn = vgui.Create("DButton",frame)
-		adminBtn:SetSize(75, 23)
-		adminBtn:SetText("Enable")
+		adminBtn:SetSize(100, 23)
+		adminBtn:SetText(ADMINMODE.AdminModeText)
 		adminBtn:SetFont("EntryFont")
 		adminBtn:SetPos(15, 25)
 		adminBtn:SetTextColor( Color( 255, 255, 255 ) )
 		adminBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 46, 204, 113, 175 ) ) -- Draw a blue button
+
+			
+
+			surface.SetDrawColor( Color(30, 39, 46, 200) )
+
+    		surface.DrawRect( 0, 0, w, h )
+
+    		surface.SetDrawColor( Color(19, 19, 19, 255) )
+
+    		surface.DrawOutlinedRect( 0, 0, w, h )
+
+    		if ply:GetModel() == ADMINMODE.PlayerModel then
+    			surface.SetDrawColor( ADMINMODE.EnabledColor )
+    			surface.DrawOutlinedRect( 0, 0, w, h )
+    			adminBtn:SetTextColor( ADMINMODE.EnabledColor )
+			else
+    			surface.SetDrawColor( ADMINMODE.DisabledColor )
+    			surface.DrawOutlinedRect( 0, 0, w, h )
+			end
 		end
+
+
 		adminBtn.DoClick = function()
+
+
+			if ply:GetModel() == ADMINMODE.PlayerModel then
+				sound.Play("buttons/button14.wav", ply:GetPos())
+				frame:Close()
+				net.Start("UnAdminMode")
+				net.SendToServer()
+			else
+				sound.Play("buttons/button14.wav", ply:GetPos())
+				frame:Close()
+				net.Start("AdminMode")
+				net.SendToServer()
+			end
+
+			
+/*
 			sound.Play("buttons/button14.wav", ply:GetPos())
 			frame:Close()
 			net.Start("AdminMode")
 			net.SendToServer()
+			*/
 		end
-
+		/*
 		local unadminBtn = vgui.Create("DButton",frame)
 		unadminBtn:SetSize(75, 23)
 		unadminBtn:SetText("Disable")
@@ -121,11 +160,11 @@ function OpenAdminMenu(ply)
 			net.Start("UnAdminMode")
 			net.SendToServer()
 		end
-
+		*/
 		local cancelBtn = vgui.Create("DButton",frame)
 		cancelBtn:SetSize(75, 23)
 		cancelBtn:SetText("Cancel")
-		cancelBtn:SetPos(65, 130)
+		cancelBtn:SetPos(30, 150)
 		cancelBtn:SetFont("EntryFont")
 		cancelBtn:SetTextColor( Color( 255, 255, 255 ) )
 		cancelBtn.Paint = function( self, w, h )
@@ -137,21 +176,52 @@ function OpenAdminMenu(ply)
 		end
 
 		local cloakBtn = vgui.Create("DButton",frame)
-		cloakBtn:SetSize(75, 23)
-		cloakBtn:SetText("Cloak")
-		cloakBtn:SetPos(110, 25)
+		cloakBtn:SetSize(100, 23)
+		cloakBtn:SetText(ADMINMODE.CloakText)
+		cloakBtn:SetPos(15, 50)
 		cloakBtn:SetFont("EntryFont")
 		cloakBtn:SetTextColor( Color( 255, 255, 255 ) )
 		cloakBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 75, 207, 250, 175 ) ) -- Draw a blue button
+
+			surface.SetDrawColor( Color(30, 39, 46, 200) )
+
+    		surface.DrawRect( 0, 0, w, h )
+
+    		surface.SetDrawColor( ADMINMODE.DisabledColor )
+
+    		surface.DrawOutlinedRect( 0, 0, w, h )
+
+			if ply:GetNoDraw() == true then
+				surface.SetDrawColor( ADMINMODE.EnabledColor )
+    			surface.DrawOutlinedRect( 0, 0, w, h )
+    			cloakBtn:SetTextColor( ADMINMODE.EnabledColor )
+			else
+    			surface.SetDrawColor( ADMINMODE.DisabledColor )
+    			surface.DrawOutlinedRect( 0, 0, w, h )
+			end
+
 		end
 		cloakBtn.DoClick = function()
+
+			if ply:GetNoDraw() == true then
+				sound.Play("buttons/button14.wav", ply:GetPos())
+				frame:Close()
+				net.Start("UnCloak")
+				net.SendToServer()
+			else
+				sound.Play("buttons/button14.wav", ply:GetPos())
+				frame:Close()
+				net.Start("Cloak")
+				net.SendToServer()
+			end
+			/*
 			sound.Play("buttons/button14.wav", ply:GetPos())
 			frame:Close()
 			net.Start("Cloak")
 			net.SendToServer()
+			*/
 		end
-
+		/*
 		local uncloakBtn = vgui.Create("DButton",frame)
 		uncloakBtn:SetSize(75, 23)
 		uncloakBtn:SetText("Disable")
@@ -167,21 +237,49 @@ function OpenAdminMenu(ply)
 			net.Start("UnCloak")
 			net.SendToServer()
 		end
+		*/
 		local noTargetBtn = vgui.Create("DButton",frame)
-		noTargetBtn:SetSize(75, 23)
-		noTargetBtn:SetText("NoTarget")
-		noTargetBtn:SetPos(110, 75)
+		noTargetBtn:SetSize(100, 23)
+		noTargetBtn:SetText(ADMINMODE.NoTargetText)
+		noTargetBtn:SetPos(15, 75)
 		noTargetBtn:SetFont("EntryFont")
 		noTargetBtn:SetTextColor( Color( 255, 255, 255 ) )
 		noTargetBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 214, 162, 232, 175 ) ) -- Draw a blue button
+			surface.SetDrawColor( Color(30, 39, 46, 200) )
+
+    		surface.DrawRect( 0, 0, w, h )
+
+    		surface.SetDrawColor( ADMINMODE.DisabledColor )
+
+    		surface.DrawOutlinedRect( 0, 0, w, h )
+			if ply:IsFlagSet( FL_NOTARGET ) == true then
+				surface.SetDrawColor( ADMINMODE.EnabledColor )
+    			surface.DrawOutlinedRect( 0, 0, w, h )
+    			cloakBtn:SetTextColor( ADMINMODE.EnabledColor )
+			else
+    			surface.SetDrawColor( ADMINMODE.DisabledColor )
+    			surface.DrawOutlinedRect( 0, 0, w, h )
+				//print( ply:IsFlagSet( FL_NOTARGET ) )
+			end
 		end
 		noTargetBtn.DoClick = function()
-			sound.Play("buttons/button14.wav", ply:GetPos())
-			frame:Close()
-			net.Start("NoTarget")
-			net.SendToServer()
+			//print( ply:IsFlagSet( FL_NOTARGET ) )
+			if ply:IsFlagSet( FL_NOTARGET ) == true then
+				sound.Play("buttons/button14.wav", ply:GetPos())
+				frame:Close()
+				net.Start("UnNoTarget")
+				net.WriteEntity(ply)
+				net.SendToServer()
+				//print( ply:IsFlagSet( FL_NOTARGET ) )
+			else
+				sound.Play("buttons/button14.wav", ply:GetPos())
+				frame:Close()
+				net.Start("NoTarget")
+				net.SendToServer()
+				//print( ply:IsFlagSet( FL_NOTARGET ) )
+			end
 		end
+		/*
 		local unNoTargetBtn = vgui.Create("DButton",frame)
 		unNoTargetBtn:SetSize(75, 23)
 		unNoTargetBtn:SetText("Disable")
@@ -197,12 +295,20 @@ function OpenAdminMenu(ply)
 			net.Start("UnNoTarget")
 			net.SendToServer()
 		end
+		*/
 
 		local textBox = vgui.Create( "DTextEntry", frame ) -- create the form as a child of frame
-		textBox:SetPos( 10, 100 )
-		textBox:SetSize( 90, 22 )
+		textBox:SetPos( 15, 125 )
+		textBox:SetSize( 101, 23 )
 		textBox:SetFont( "BoxFont" )
 		textBox:SetText( "Text" )
+
+		if ADMINMODE.UsingDarkTheme == true then
+			textBox:SetTextColor( Color( 255, 255, 255 ) )
+		else
+			
+		end
+
 		textBox.OnEnter = function( self )
 			if table.HasValue(ADMINMODE.AnnouncementAccess, ply:GetNWString("usergroup")) then
 				sound.Play("buttons/button14.wav", ply:GetPos())
@@ -247,13 +353,13 @@ function OpenAdminMenu(ply)
 		end
 
 		local physFreezeBtn = vgui.Create("DButton",frame)
-		physFreezeBtn:SetSize(75, 23)
+		physFreezeBtn:SetSize(100, 23)
 		physFreezeBtn:SetText("Announce")
-		physFreezeBtn:SetPos(15, 75)
+		physFreezeBtn:SetPos(15, 100)
 		physFreezeBtn:SetFont("EntryFont")
 		physFreezeBtn:SetTextColor( Color( 255, 255, 255 ) )
 		physFreezeBtn.Paint = function( self, w, h )
-			draw.RoundedBox( 0, 0, 0, w, h, Color( 52, 231, 228, 175 ) ) 
+			draw.RoundedBox( 0, 0, 0, w, h, Color( 255, 28, 28, 175 ) ) 
 		end
 		physFreezeBtn.DoClick = function()
 
@@ -303,7 +409,7 @@ function OpenAdminMenu(ply)
 
 		local xBtn = vgui.Create("DButton",frame)
 		xBtn:SetText("X")
-		xBtn:SetPos(175, 0)
+		xBtn:SetPos(115, 0)
 		xBtn:SetSize(16, 18)
 		xBtn:SetFont("EntryFont")
 		xBtn:SetTextColor( Color( 255, 255, 255 ) )
@@ -314,24 +420,6 @@ function OpenAdminMenu(ply)
 			sound.Play("buttons/button14.wav", ply:GetPos())
 			frame:Close()
 		end
-
-		
-		
-
-		frametitle = frame:GetTitle()
-
-		if frametitle == "AdminMode by Soul Networks" then
-			return 
-		else
-			function textstuff()
-				chat.AddText(Color(255, 66, 66), "AdminMode Authenticator", Color(255, 255, 255), " - Tampered Addon")
-			end
-			timer.Create("timer", 1, 0, textstuff )
-			net.Start("Title")
-			net.SendToServer()
-			
-		end
-
 	else
 		chat.AddText(Color(255, 255, 255), "[", Color(255, 36, 36), ADMINMODE.ChatName, Color(255, 255, 255), "] ", "Denied Access")
 	end
@@ -366,7 +454,7 @@ net.Receive("UnCloakApproved", function( len )
 end)
 
 net.Receive("NoTargetApproved", function( len )
-	chat.AddText(Color(40, 40, 40), "", Color(255, 60, 60), ADMINMODE.ChatName, Color(40, 40, 40), " ▶ ", Color(255, 255, 255), "NPC NoTarget Enabled")
+	chat.AddText(Color(40, 40, 40), "", Color(255, 60, 60), ADMINMODE.ChatName, Color(40, 40, 40), " ▶ ", Color(255, 255, 255), "NPC NoTargeted (To turn off disable ", ADMINMODE.AdminModeText, ")")
 	print("[AdminMode] Approved!")
 end)
 
